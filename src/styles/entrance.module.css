@@ -1,0 +1,13 @@
+.box{
+    width: 100vw;
+    height: 100vh;
+}
+
+.radio{
+    margin-left: 10px;
+    margin-top: 15px;
+}
+
+.input{
+    margin-top: 15px;
+}
