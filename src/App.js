@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { initUsers } from './redux/metaInfoSlice';
 import SuggestForm from './components/SuggestForm';
 import { initServicers } from './redux/serviceSlice';
+import AdvancedSearch from './components/AdvancedSearch';
 
 function App() {
 
@@ -22,7 +23,9 @@ function App() {
   return (
     <Routes>
       <Route path='search' element={<Search />}>
-        <Route path='find' element={<FindForm />}></Route>
+        <Route path='find' element={<FindForm />}>
+          <Route path='advanced' element={<AdvancedSearch />} />
+        </Route>
         <Route path='suggest' element={<SuggestForm />} />
       </Route>
       <Route path='/register' element={<Register />} />
