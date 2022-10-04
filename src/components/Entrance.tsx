@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { cleanScreenMessage, logInAction } from '../redux/metaInfoSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import style from '../styles/entrance.module.css'
+import { RootState, useAppDispatch } from '../redux/configureStore';
 
 const Entrance = () => {
 
-    const { link, message, isLogin } = useSelector(state => state.metaInfo);
+    const { link, message, isLogin } = useSelector((state: RootState) => state.metaInfo);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const dispatch = useAppDispatch();
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     useEffect(() => {
         if (isLogin) navigate(link)

@@ -1,12 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../redux/configureStore';
 import { logOutAction } from '../redux/metaInfoSlice';
 import { searchLeaving } from '../redux/serviceSlice';
 
 const Navigation = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     return (
         <div className='row'>

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
+import { useAppDispatch } from '../redux/configureStore';
 import { searchService } from '../redux/serviceSlice';
 import ServicesList from './ServicesList';
 
 const FindForm = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [search, setSearch] = useState('');
 

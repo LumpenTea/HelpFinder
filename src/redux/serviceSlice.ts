@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { searchCard, serviceInterface, serviceStateInterface } from "./types";
 
-const serviceState = {
+const serviceState: serviceStateInterface = {
     services: [],
     searched: [],
     isSearching: false
@@ -12,29 +13,31 @@ const serviceSlice = createSlice({
     reducers: {
         initServicers(state) {
             if (localStorage.getItem('services')) {
-                state.services = JSON.parse(localStorage.getItem('services'));
+                state.services = JSON.parse(localStorage.getItem('services')!);
             } else {
                 localStorage.setItem('services', JSON.stringify(state.services));
             }
         },
-        addService(state, action) {
+        addService(state, action: PayloadAction<serviceInterface>) {
             state.services.push(action.payload);
             localStorage.setItem('services', JSON.stringify(state.services));
         },
-        searchService(state, action) {
+        searchService(state, action: PayloadAction<string>) {
+            const founded: serviceInterface[] = [];
             state.isSearching = true;
             state.searched = [];
-            state.services.forEach(service => {
-                if (service.serviceName === action.payload) state.searched.push(service);
+            state.services.forEach((service: serviceInterface) => {
+                if (service.serviceName === action.payload) founded.push(service);
             })
+            state.searched.push(founded);
         },
-        advancedSearch(state, action) {
+        advancedSearch(state, action: PayloadAction<searchCard>) {
 
             state.searched = [];
 
-            const filterSearchingParams = card => {
+            const filterSearchingParams = (card: searchCard) => {
                 let searchCard = {};
-                
+
                 if (card.serviceName) searchCard = { ...searchCard, serviceName: card.serviceName };
                 if (card.specialistName) searchCard = { ...searchCard, name: card.specialistName };
                 if (card.minPrice) searchCard = { ...searchCard, minPrice: card.minPrice };
@@ -44,15 +47,15 @@ const serviceSlice = createSlice({
                 return searchCard;
             }
 
-            const searchingByParams = (searchCard, whereToFind) => {
-                let founded = [];
-                whereToFind.forEach(service => {
+            const searchingByParams = (searchCard: searchCard, whereToFind: serviceInterface[]) => {
+                let founded: serviceInterface[] = [];
+                whereToFind.forEach((service: serviceInterface) => {
                     Object.keys(searchCard).forEach(key => {
-                        if(searchCard[key] === service[key] && !founded.includes(service)) founded.push(service);
-                        else if (searchCard[key] === service[key]) return;
+                        if (searchCard[key] === service[key] && !founded.includes(service)) founded.push(service);
+                        else if (searchCard[key] === service[key]) return
                         else founded = [];
                     })
-                    if(founded) state.searched.push(founded);
+                    if (founded) state.searched.push(founded);
                 })
             }
 

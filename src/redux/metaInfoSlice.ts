@@ -1,25 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { login, MetaInfoInterface, userInterface, } from "./types";
 
-const searchLink = '/search/find';
+const searchLink: string = '/search/find';
 
-const metaInfoState = {
-    metaInfo: {
-        isLogin: false,
-        buyerRadio: true,
-        specialistRadio: false,
-        link: searchLink,
-        message: '',
-        messageColor: 'text-success',
-        users: [],
-        currentUser: {}
-    }
+const metaInfoState: MetaInfoInterface = {
+    isLogin: false,
+    buyerRadio: true,
+    specialistRadio: false,
+    link: searchLink,
+    message: '',
+    messageColor: 'text-success',
+    users: []
 }
 
 const metaInfoSlice = createSlice({
     name: 'metaInfo',
-    initialState: metaInfoState.metaInfo,
+    initialState: metaInfoState,
     reducers: {
-        logInAction(state, action) {
+        logInAction(state, action: PayloadAction<login>) {
             const userCheck = state.users.find(user => user.username === action.payload.username && user.password === action.payload.password)
             if (userCheck) {
                 state.isLogin = true;
@@ -34,12 +32,12 @@ const metaInfoSlice = createSlice({
         },
         initUsers(state) {
             if (localStorage.getItem('users')) {
-                const users = JSON.parse(localStorage.getItem('users'));
+                const users = JSON.parse(localStorage.getItem('users')!);
                 state.users = users;
             }
         },
-        registerAction(state, action) {
-            state.users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+        registerAction(state, action: PayloadAction<userInterface>) {
+            state.users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')!) : [];
             if (action.payload.password === action.payload.repeatedPassword) {
                 if (state.users.find(user => user.username === action.payload.username)) {
                     state.message = 'This user is already exist';
